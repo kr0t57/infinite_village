@@ -15,6 +15,10 @@ namespace StarterAssets
 	public class FirstPersonController : MonoBehaviour
 	{
 		[Header("Player")]
+		[Tooltip("Helth")]
+		public int maxHealth = 100;
+		public int currentHealth;
+		public HealthBar healthBar;
 		[Tooltip("Move speed of the character in m/s")]
 		public float MoveSpeed = 4.0f;
 		[Tooltip("Sprint speed of the character in m/s")]
@@ -87,6 +91,9 @@ namespace StarterAssets
 			_controller = GetComponent<CharacterController>();
 			_input = GetComponent<StarterAssetsInputs>();
 
+			currentHealth = maxHealth;
+			healthBar.SetMaxHealth(maxHealth);
+
 			// reset our timeouts on start
 			_jumpTimeoutDelta = JumpTimeout;
 			_fallTimeoutDelta = FallTimeout;
@@ -97,6 +104,13 @@ namespace StarterAssets
 			JumpAndGravity();
 			GroundedCheck();
 			Move();
+
+		}
+
+		void TakeDamage(int damage){
+			currentHealth -= damage;
+
+			healthBar.SetHealth(currentHealth);
 		}
 
 		private void LateUpdate()
